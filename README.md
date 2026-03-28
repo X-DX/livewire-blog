@@ -31,21 +31,40 @@ This project focused on building a modern, production-ready blog application fro
     - Created a new Laravel 12 project using the Livewire starter kit.
     - Configured the project during installation by selecting the default Laravel authentication and the Livewire starter kit.
     - Opened the project in VS Code
+
 2. Database and Authentication Configuration:
     - Updated the .env file to use the MySQL driver
     - Ran the initial database migrations to set up the authentication tables (users, password resets, etc.) provided by the starter kit.
+
 3. Role-Based Access Control (RBAC) Setup:
     - Installed the Spatie Laravel Permission package via Composer
+        - run "composer require spatie/laravel-permission"
     - Published the package's migration and configuration files
+        - run "php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider""
     - Ran migrations to create the roles, permissions, and pivot tables
-    - Updated the User model by adding the HasRoles trait to enable permission methods like assignRole and hasPermissionTo
+        - run "php artisan migrate"
+    - Updated the User model by adding the HasRoles trait to enable permission methods like assignRole and hasPermissionTo and etc.
+
 4. Models and Data Seeding:
     - Created the Post model and its corresponding migration file to define the blog post structure
+        - php artisan make:model Post -m
     - Created and ran a Database Seeder to initialize four roles: Admin, Editor, Author, and Subscriber
+        - run "php artisan make:seeder RolePermissionSeeder"
+        - In RolePermissionSeeder: create permissions, create roles and assign permissions.
+        - In DatabaseSeeder: call RolePermissionSeeder, create test test admin and test author
+        - Run seeder: "php artisan db:seed" or "php artisan migrate:fresh --seed"
+
 5. Livewire 4 Component Exploration:
     - Created a Single File Component (SFC) where PHP logic and Blade templates coexist in one file
-    - Created a Multi-file Component (MFC) after publishing the Livewire configuration file and tweaking the namespace to avoid conflicts with the starter kit
+        - run "php artisan make:livewire pages::welcome"
+    - Created a Multi-file Component (MFC).
+        - Before that we need to define and register it our livewire config file. Because we are using namespace which is do not exit
+        - Publishing the configuration file: run "php artisan livewire:config"
+        - run "php artisan make:livewire components::post-card --mfc"
     - Created a traditional Class-based Component consisting of a PHP class and a separate Blade file
+        - run "php artisan make:livewire PostList --class"
+
 6. Application Testing:
     - Started the development server to run the application, queue, and logs simultaneously
+        - run "composer run dev"
     - Verified the setup by registering a new account on the local server to confirm the authentication and dashboard layouts were working correctly
